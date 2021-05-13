@@ -104,7 +104,13 @@ class GPNF_Session {
 	}
 
 	public function get_cookie_name() {
-		$name = implode( '_', array( self::COOKIE_NAME, $this->_form_id ) );
+		if (is_array($this->_form_id)) {
+			$formId = array($this->_form_id)[0]['id'];
+		} else {
+			$formId = $this->_form_id;
+		}
+		// $this->_form_id can be both an int, or an array, therefore, I firstly perform the check to determine which one is the case, since implode isn't designed to be used on array of arrays. I have created a $formID variable which should return the int whether $this->_form_id returns an array or an integer.
+		$name = implode( '_', array( self::COOKIE_NAME, $formId) );
 		/**
 		 * Filter the name of the session cookie GPNF uses for a given form
 		 *
